@@ -1,5 +1,6 @@
 package com.HP.apirest.service;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,23 +11,38 @@ import com.HP.apirest.repository.PersonageRepository;
 
 @Service
 public class PersonageService {
+    
     @Autowired
     PersonageRepository repository;
 
     public void addAllPersonages(List<Personage> personage) { 
+    
         repository.saveAll(personage);
+    
     }
 
     public void addNewPersonage(Personage personage) {
+    
         repository.saveOne(personage);
+    
     }
 
     public List<Personage> getAllPersonages() {
+    
         return repository.findAll();
+    
     }
 
     public void deletePersonage(Long id) {
+    
         repository.deleteById(id);
+    
+    }
+
+    public void updatePersonage(Long id, Personage personage) throws ParseException {
+        
+        repository.updateById(id, personage);
+    
     }
 
     public boolean verifyDatabase() {

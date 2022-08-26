@@ -1,5 +1,7 @@
 package com.HP.apirest.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -79,10 +81,20 @@ public class Personage {
     public void setHouse(String house) {
         this.house = house;
     }
-    public Date getDateOfBirth() {
-        return dateOfBirth;
+    public String getDateOfBirth() {
+
+        if (dateOfBirth == null) {
+            return "";
+        }
+
+        DateFormat outputFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        String output = outputFormatter.format(dateOfBirth);
+
+        return output;
+
     }
     public void setDateOfBirth(Date dateOfBirth) {
+
         this.dateOfBirth = dateOfBirth;
     }
     public int getYearOfBirth() {

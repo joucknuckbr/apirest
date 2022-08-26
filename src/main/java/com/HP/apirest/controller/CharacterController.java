@@ -182,16 +182,34 @@ public class CharacterController {
         }
         
     }
+
+    @RequestMapping(value = "/updatePersonage", method = RequestMethod.PUT)
+    public String updatePersonage(Long id, @Validated @RequestBody Personage personage) {
+        
+        try{
+            personageService.updatePersonage(id, personage);
+
+            return "Updated";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
     
     public static String[] toStringArray(JSONArray array) {
+        
         if(array==null)
         return new String[0];
         
         String[] arr = new String[array.length()];
+
         for(int i = 0; i < arr.length; i++) {
             arr[i]=array.optString(i);
         }
+        
         return arr;
+
     }
     
 }
