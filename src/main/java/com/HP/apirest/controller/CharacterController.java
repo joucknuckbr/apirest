@@ -7,18 +7,30 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.HP.apirest.model.Personage;
 import com.HP.apirest.model.Wand;
+import com.HP.apirest.service.PersonageService;
 
 @RestController
 public class CharacterController {
     
-    @RequestMapping("/pushAll")
+    @Autowired
+    PersonageService personageService;
+    
+    @RequestMapping(value = "/pushAll", method = RequestMethod.GET)
     public List<Personage> pushAll() {
+        
+        if(personageService.verifyDatabase()) {
+            return personageService.getAllPersonages();
+        }
         
         String uri = "http://hp-api.herokuapp.com/api/characters";
         RestTemplate restTemplate = new RestTemplate();
@@ -123,6 +135,8 @@ public class CharacterController {
                 //image
                 personageModel.setImage(obj.getString("image"));  
                 
+                personageService.addNewPersonage(personageModel);
+                
                 personages.add(personageModel);
             }
             
@@ -134,12 +148,47 @@ public class CharacterController {
         
     }
     
+    @RequestMapping(value = "/showAll", method = RequestMethod.GET)
+    public List<Personage> showAll() {
+        
+        return personageService.getAllPersonages();
+        
+    }
+
+    @RequestMapping(value = "/addNewPersonage", method = RequestMethod.POST)
+    public Personage addNewPersonage(@Validated @RequestBody Personage personage) {
+        
+        try{
+            personageService.addNewPersonage(personage);
+
+            return personage;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
+
+    @RequestMapping(value = "/deletePersonage", method = RequestMethod.DELETE)
+    public String deletePersonage(Long id) {
+        
+        try{
+            personageService.deletePersonage(id);
+
+            return "Removed";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
+    
     public static String[] toStringArray(JSONArray array) {
         if(array==null)
         return new String[0];
         
-        String[] arr=new String[array.length()];
-        for(int i=0; i<arr.length; i++) {
+        String[] arr = new String[array.length()];
+        for(int i = 0; i < arr.length; i++) {
             arr[i]=array.optString(i);
         }
         return arr;

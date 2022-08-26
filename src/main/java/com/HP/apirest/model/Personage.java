@@ -2,15 +2,20 @@ package com.HP.apirest.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
+@Entity
 public class Personage {
 
     @Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
+    private Long id;
     private String name;
     private String[] alternate_names;
     private String species;
@@ -22,7 +27,10 @@ public class Personage {
     private String ancestry;
     private String eyeColour;
     private String hairColour;
+
+    @OneToOne(targetEntity = Wand.class, fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
     private Wand wand;
+    
     private String patronus;
     private boolean hogwartsStudent;
     private boolean hogwartsStaff;
@@ -35,10 +43,10 @@ public class Personage {
 
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getName() {

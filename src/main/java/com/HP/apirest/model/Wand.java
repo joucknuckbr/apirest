@@ -1,15 +1,24 @@
 package com.HP.apirest.model;
 
-public class Wand {
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
+public class Wand {
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private long id;
     private String wood;
     private String core;
     private Double length;
-
+    
     public Wand() {
-
+        
     }
-
+    
     public String getWood() {
         return wood;
     }
@@ -28,5 +37,5 @@ public class Wand {
     public void setLength(Double length) {
         this.length = length;
     }
-
+    
 }
