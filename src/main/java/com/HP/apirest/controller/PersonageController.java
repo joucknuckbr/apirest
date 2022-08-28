@@ -20,7 +20,7 @@ import com.HP.apirest.model.Wand;
 import com.HP.apirest.service.PersonageService;
 
 @RestController
-public class CharacterController {
+public class PersonageController {
     
     @Autowired
     PersonageService personageService;
@@ -155,6 +155,18 @@ public class CharacterController {
         
     }
 
+    @RequestMapping(value = "/showOne", method = RequestMethod.GET)
+    public Personage showOne(Long id) {
+
+        if (id == null) {
+
+            return null;
+
+        }
+
+        return personageService.getPersonage(id);
+    }
+    
     @RequestMapping(value = "/addNewPersonage", method = RequestMethod.POST)
     public Personage addNewPersonage(@Validated @RequestBody Personage personage) {
         
@@ -170,28 +182,42 @@ public class CharacterController {
     }
 
     @RequestMapping(value = "/deletePersonage", method = RequestMethod.DELETE)
-    public String deletePersonage(Long id) {
+    public Personage deletePersonage(Long id) {
+
+        if (id == null) {
+
+            return null;
+
+        }
         
         try{
-            personageService.deletePersonage(id);
+            Personage removed = personageService.deletePersonage(id);
 
-            return "Removed";
+            return removed;
         } catch (Exception e) {
             e.printStackTrace();
+
             return null;
         }
         
     }
 
     @RequestMapping(value = "/updatePersonage", method = RequestMethod.PUT)
-    public String updatePersonage(Long id, @Validated @RequestBody Personage personage) {
+    public Personage updatePersonage(Long id, @Validated @RequestBody Personage personage) {
+
+        if (id == null) {
+
+            return null;
+
+        }
         
         try{
-            personageService.updatePersonage(id, personage);
+            Personage updated = personageService.updatePersonage(id, personage);
 
-            return "Updated";
+            return updated;
         } catch (Exception e) {
             e.printStackTrace();
+
             return null;
         }
         

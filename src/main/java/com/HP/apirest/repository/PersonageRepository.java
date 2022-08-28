@@ -20,17 +20,12 @@ public class PersonageRepository  {
     EntityManager entityManager;
     
     @Transactional
-    public void saveAll(List<Personage> personage){
-
+    public Personage saveOne(Personage personage){
+        
         entityManager.persist(personage);
-
-    }
-    
-    @Transactional
-    public void saveOne(Personage personage){
-
-        entityManager.persist(personage);
-
+        
+        return entityManager.find(Personage.class, personage.getId());
+        
     }
     
     @Transactional
@@ -39,35 +34,49 @@ public class PersonageRepository  {
         return entityManager.createQuery("FROM Personage").getResultList();
         
     }
-
+    
+    @Transactional
+    public Personage findOne(Long id) {
+        
+        return entityManager.find(Personage.class, id);
+        
+    }
+    
     @Transactional
     public Personage deleteById(Long id) {
-
+        
         Personage personage = entityManager.find(Personage.class, id);
+        
+        if (personage == null) {
+            
+            return null;
+            
+        }
+        
         entityManager.remove(personage);
-
+        
         return personage;
     }
-
+    
     @Transactional
     public Personage updateById(Long id, Personage personage) throws ParseException {
-
+        
         Personage merge = entityManager.find(Personage.class, id);
         
         if(merge == null){
             return null;
         }
-
+        
         merge.setName(personage.getName());
         merge.setAlternate_names(personage.getAlternate_names());
         merge.setSpecies(personage.getSpecies());
         merge.setGender(personage.getGender());
         merge.setHouse(personage.getHouse());
-
+        
         Date format = new SimpleDateFormat("dd-MM-yyyy").parse(personage.getDateOfBirth());
         format.setDate(format.getDate()+1);
         merge.setDateOfBirth(format);
-
+        
         merge.setYearOfBirth(personage.getYearOfBirth());
         merge.setWizard(personage.isWizard());
         merge.setAncestry(personage.getAncestry());
@@ -81,18 +90,18 @@ public class PersonageRepository  {
         merge.setAlternate_actors(personage.getAlternate_actors());        
         merge.setAlive(personage.isAlive());
         merge.setImage(personage.getImage());
-
+        
         entityManager.merge(merge);
-
-        return personage;
-
+        
+        return merge;
+        
     }
     
     @Transactional
     public Integer verify() {
-
+        
         return entityManager.createQuery("FROM Personage WHERE ROWNUM <= 1").getResultList().size();
-    
+        
     }
     
 }

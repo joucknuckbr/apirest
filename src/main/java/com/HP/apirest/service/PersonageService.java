@@ -15,15 +15,9 @@ public class PersonageService {
     @Autowired
     PersonageRepository repository;
 
-    public void addAllPersonages(List<Personage> personage) { 
+    public Personage addNewPersonage(Personage personage) {
     
-        repository.saveAll(personage);
-    
-    }
-
-    public void addNewPersonage(Personage personage) {
-    
-        repository.saveOne(personage);
+        return repository.saveOne(personage);
     
     }
 
@@ -33,15 +27,21 @@ public class PersonageService {
     
     }
 
-    public void deletePersonage(Long id) {
+    public Personage getPersonage(Long id) {
+
+        return repository.findOne(id);
+
+    }
+
+    public Personage deletePersonage(Long id) {
     
-        repository.deleteById(id);
+        return repository.deleteById(id);
     
     }
 
-    public void updatePersonage(Long id, Personage personage) throws ParseException {
+    public Personage updatePersonage(Long id, Personage personage) throws ParseException {
         
-        repository.updateById(id, personage);
+        return repository.updateById(id, personage);
     
     }
 
