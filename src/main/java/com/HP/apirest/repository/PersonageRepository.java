@@ -2,6 +2,7 @@ package com.HP.apirest.repository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -56,6 +57,22 @@ public class PersonageRepository  {
         entityManager.remove(personage);
         
         return personage;
+    }
+
+    @Transactional
+    public List<Personage> deleteAll() {
+
+        List<Personage> persons = new ArrayList<Personage>();
+        
+        for (Personage personage : (List<Personage>) entityManager.createQuery("FROM Personage").getResultList()) {
+
+            persons.add(personage);
+            entityManager.remove(personage);
+
+        }
+        
+        return persons;
+        
     }
     
     @Transactional

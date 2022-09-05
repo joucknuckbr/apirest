@@ -202,6 +202,21 @@ public class PersonageController {
         
     }
 
+    @RequestMapping(value = "/deleteAll", method = RequestMethod.DELETE)
+    public List<Personage> deleteAll() {
+        
+        try{
+            List<Personage> removed = personageService.deleteAll();
+
+            return removed;
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        }
+        
+    }
+
     @RequestMapping(value = "/updatePersonage", method = RequestMethod.PUT)
     public Personage updatePersonage(Long id, @Validated @RequestBody Personage personage) {
 

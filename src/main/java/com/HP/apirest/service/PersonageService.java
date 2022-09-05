@@ -39,6 +39,12 @@ public class PersonageService {
     
     }
 
+    public  List<Personage> deleteAll() {
+
+        return repository.deleteAll();
+
+    }
+
     public Personage updatePersonage(Long id, Personage personage) throws ParseException {
         
         return repository.updateById(id, personage);
